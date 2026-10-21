@@ -1,0 +1,107 @@
+[
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "neha.gupta",
+    "text": "Starting the reporting layer for the Grocery App dashboard. Thinking MongoDB — flexible schema, quick to set up. Any objections?",
+    "ts": "1739000000.000100"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "rahul.verma",
+    "text": "Wait. We rejected MongoDB for reporting on the Retail Corp CRM project. Loyalty reports took 40+ seconds. See ADR-004.",
+    "ts": "1739000120.000200"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "neha.gupta",
+    "text": "I didn't know about that. Where is it?",
+    "ts": "1739000165.000300"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "rahul.verma",
+    "text": "adr_004_postgresql_reporting.md. We went with PostgreSQL materialized views and reports load in about 3 seconds.",
+    "ts": "1739000225.000400"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "sunita.patel",
+    "text": "Lesson from that one: benchmark reporting queries with real data volume before choosing a store.",
+    "ts": "1739000315.000500"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "neha.gupta",
+    "text": "OK, switching to PostgreSQL. I'll benchmark with 5M rows first.",
+    "ts": "1739000395.000600"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "priya.sharma",
+    "text": "Quick one — a regional bank prospect asks if we've done Kubernetes in finance. Who should I loop in?",
+    "ts": "1739003995.000700"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "vikram.singh",
+    "text": "That's me. Bank A: EKS, 12 weeks, delivered July 2024. I can join the call.",
+    "ts": "1739004095.000800"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "priya.sharma",
+    "text": "Great, Thursday 3pm. Can I share the anonymized case study?",
+    "ts": "1739004135.000900"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "kavita.joshi",
+    "text": "Yes, the Kubernetes bank case study is cleared for public use. Don't share the Bank A proposal or pricing.",
+    "ts": "1739004205.001000"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "sanjay.rao",
+    "text": "FYI, I finished the runbook for the Redis session queue issue at Retail Corp. Kavita, can you review?",
+    "ts": "1739011405.001100"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "sunita.patel",
+    "text": "Reminder: the legacy performance benchmark in week 1 is now mandatory for all compliance projects (from the GDPR post-mortem).",
+    "ts": "1739015005.001200"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "rahul.verma",
+    "text": "Added it to the delivery template.",
+    "ts": "1739015125.001300"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "amit.kumar",
+    "text": "Do we have a price reference for a 10-week ML project?",
+    "ts": "1739016925.001400"
+  },
+  {
+    "type": "message",
+    "channel": "engineering-general",
+    "user": "priya.sharma",
+    "text": "Grocery App recommendation engine: $85,000 for 10 weeks. It's in the proposals folder.",
+    "ts": "1739017015.001500"
+  }
+]

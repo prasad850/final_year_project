@@ -1,0 +1,107 @@
+[
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "rahul.verma",
+    "text": "Supply chain module is blocking us. Custom SAP code isn't translating via DMS. Going to need manual work.",
+    "ts": "1712345678.000100"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "vikram.singh",
+    "text": "I can take it. Give me 3 days.",
+    "ts": "1712345700.000200"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "sunita.patel",
+    "text": "Good. Vikram owns supply chain now. Let's also add a checklist for custom SAP modules in the template — we keep hitting this.",
+    "ts": "1712345740.000300"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "rahul.verma",
+    "text": "Agreed. Also the finance data has 2-year gaps. Data quality is worse than we thought. Going to need 3 more days for validation.",
+    "ts": "1712345800.000400"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "priya.sharma",
+    "text": "Was data quality flagged in the proposal? I want to make sure we covered it.",
+    "ts": "1712345850.000500"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "rahul.verma",
+    "text": "Yes — high risk in proposal. We have contingency budget.",
+    "ts": "1712345900.000600"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "priya.sharma",
+    "text": "Good. I'll tell the client about the gaps on Thursday's call.",
+    "ts": "1712346020.000700"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "neha.gupta",
+    "text": "Staging validation for the HR module finished. 0 mismatches across 41 tables.",
+    "ts": "1712349620.000800"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "rahul.verma",
+    "text": "Nice. Neha, can you run the same check on finance once the gaps are filled?",
+    "ts": "1712349710.000900"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "neha.gupta",
+    "text": "Will do. Should we use parallel validation like we did for Manufacturing Co?",
+    "ts": "1712349770.001000"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "rahul.verma",
+    "text": "Yes. Run old and new side by side and compare row counts and checksums per table.",
+    "ts": "1712349840.001100"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "sunita.patel",
+    "text": "Decision: we use parallel validation for all modules. I'll write it into the design doc today.",
+    "ts": "1712349920.001200"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "vikram.singh",
+    "text": "Supply chain custom code: 2 of 5 modules done. On track for 3 days.",
+    "ts": "1712436320.001300"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "priya.sharma",
+    "text": "Client confirmed they will send the missing 2021 finance data by Monday.",
+    "ts": "1712443520.001400"
+  },
+  {
+    "type": "message",
+    "channel": "delivery-healthinc",
+    "user": "rahul.verma",
+    "text": "Great. If it arrives Monday we keep the cutover date of 2024-06-07.",
+    "ts": "1712443820.001500"
+  }
+]

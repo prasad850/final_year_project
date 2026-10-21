@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+python-dotenv
+pydantic
+sentence-transformers
+chromadb
+neo4j
+google-generativeai
+rapidfuzz
+pymupdf
+streamlit
+requests
