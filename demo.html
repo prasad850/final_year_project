@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nova Memory Agent — Semester 2 (Mockup)</title>
+<style>
+:root{--bg:#fff;--fg:#0f172a;--mut:#64748b;--card:#fff;--bd:#e2e8f0;--side:#f8fafc;--pri:#4338ca;--pb:#4f46e5;--ps:#eef2ff;--soft:#f1f5f9;--ok:#16a34a;--wn:#d97706;--bd2:#dc2626;--wb:#fffbeb;--gb:#f0fdf4;--pur:#8b5cf6}
+*{box-sizing:border-box}
+body{margin:0;font:14px/1.5 Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--fg)}
+button,input,textarea,select{font:inherit;color:inherit}
+.app{display:flex;min-height:100vh}
+aside{width:230px;flex:none;background:var(--side);border-right:1px solid var(--bd);padding:14px;position:sticky;top:0;height:100vh;overflow:auto;display:flex;flex-direction:column}
+aside nav{flex:1;margin:12px 0}
+.nv{display:flex;gap:10px;align-items:center;width:100%;padding:7px 10px;border:0;background:none;border-radius:8px;font-weight:500;cursor:pointer;text-align:left;font-size:13px}
+.nv:hover{background:var(--soft)}.nv.on{background:var(--ps);color:var(--pri)}
+.nv i{margin-left:auto;background:var(--bd2);color:#fff;border-radius:9px;padding:0 7px;font-size:11px;font-style:normal}
+.wrap{flex:1;min-width:0}
+header{display:flex;gap:10px;align-items:center;padding:10px 20px;border-bottom:1px solid var(--bd);position:sticky;top:0;background:var(--bg);z-index:5}
+main{padding:24px;max-width:1100px}
+h1{font-size:22px;margin:0 0 6px}p.s{color:var(--mut);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.b{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--pb);background:var(--pb);color:#fff;border-radius:8px;padding:7px 14px;font-weight:500;cursor:pointer;font-size:13px}
+.b.o{background:var(--card);color:var(--fg);border-color:var(--bd)}.b.o:hover{background:var(--soft)}
+.b.g{background:var(--ok);border-color:var(--ok)}.b.r{background:var(--bd2);border-color:var(--bd2)}
+.bg{display:inline-block;border:1px solid var(--bd);border-radius:99px;padding:2px 10px;font-size:11px;font-weight:600;margin-right:6px}
+.ok{color:var(--ok);border-color:var(--ok)}.wn{color:var(--wn);border-color:var(--wn)}.bd{color:var(--bd2);border-color:var(--bd2)}.pr{color:var(--pri);border-color:var(--pri);background:var(--ps)}.pu{color:var(--pur);border-color:var(--pur);background:#f5f3ff}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.stat .v{font-size:28px;font-weight:700;color:var(--pri);line-height:1.1}
+.stat .l{font-size:12px;color:var(--mut);margin-top:4px}
+.stat .h{font-size:11px;color:var(--ok);margin-top:6px;font-weight:500}
+.banner{padding:14px 18px;border-radius:12px;margin-bottom:18px;border:1px solid}
+.banner.hero{background:linear-gradient(135deg,#eef2ff,#f5f3ff);border-color:#c7d2fe}
+.banner.warn{background:var(--wb);border-color:var(--wn);color:#78350f}
+.banner.ok{background:var(--gb);border-color:var(--ok);color:#14532d}
+.m{color:var(--mut);font-size:12px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--bd)}
+th{font-size:12px;color:var(--mut);font-weight:600;background:var(--soft)}
+.tabs{display:inline-flex;background:var(--soft);border-radius:8px;padding:3px;margin-bottom:16px}
+.tabs button{border:0;background:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px}
+.tabs .on{background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.chip{padding:6px 12px;border:1px solid var(--bd);border-radius:8px;background:var(--card);font-size:13px;cursor:pointer;text-align:left}
+.chip:hover{border-color:var(--pb)}
+.src{background:var(--soft);border-radius:8px;padding:8px 10px;margin-top:6px;font-size:13px;cursor:pointer}
+.src .full{display:none;margin-top:6px;padding-top:6px;border-top:1px dashed var(--bd);color:var(--mut)}
+.src.open .full{display:block}
+.src:hover{background:var(--bd)}
+.path{display:flex;flex-direction:column;gap:8px;background:var(--soft);border-radius:10px;padding:12px;margin:10px 0;font-size:13px}
+.path .step{display:flex;gap:10px;align-items:center}
+.path .step .n{background:var(--pri);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.path .step .r{color:var(--mut);font-size:11px;font-style:italic}
+.signal{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0}
+.signal>div{background:var(--soft);border-radius:8px;padding:10px;font-size:12px}
+.signal .v{font-weight:700;font-size:16px;margin-bottom:2px}
+.signal .ok{color:var(--ok)}.signal .wn{color:var(--wn)}.signal .bd{color:var(--bd2)}
+.hm{display:grid;grid-template-columns:120px repeat(6,1fr);gap:2px;font-size:11px}
+.hm .h{font-weight:600;padding:6px 4px;text-align:center;color:var(--mut)}
+.hm .l{padding:6px 4px;font-weight:500}
+.hm .c{padding:8px 4px;text-align:center;border-radius:4px;color:#fff;font-size:10px;font-weight:600}
+.env{display:inline-flex;gap:6px;align-items:center;font-size:11px;color:var(--mut);padding:3px 8px;border:1px solid var(--bd);border-radius:99px;background:var(--card)}
+.env .dot{width:6px;height:6px;border-radius:50%;background:var(--ok)}
+.demo-pill{background:linear-gradient(90deg,var(--pb),var(--pur));color:#fff;padding:4px 10px;border-radius:99px;font-size:11px;font-weight:600}
+.thread{display:flex;flex-direction:column;gap:16px}
+.turn-q{color:var(--mut);font-weight:500;font-size:12px;margin-bottom:4px}
+.turn-q b{color:var(--fg)}
+.empty{border:1px dashed var(--bd);border-radius:12px;padding:30px;text-align:center;color:var(--mut)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;margin:10px 0}
+.legend span{padding:3px 8px;border-radius:6px;background:var(--soft);color:#fff;font-weight:600}
+details.card summary{cursor:pointer;font-weight:600}
+@media(max-width:767px){aside{display:none}main{padding:14px}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// ============ MOCK DATA ============
+const USERS=[
+  {n:"Admin",r:"Admin",t:"Delivery",d:"System owner"},
+  {n:"Priya Sharma",r:"Manager",t:"Pre-Sales",d:"Pre-Sales Manager"},
+  {n:"Rahul Verma",r:"Senior Member",t:"Delivery",d:"Senior Engineer · ERP expert"},
+  {n:"Sunita Patel",r:"Manager",t:"Delivery",d:"Tech Lead · GDPR expert"},
+  {n:"Vikram Singh",r:"Member",t:"Delivery",d:"Engineer · Kubernetes"},
+  {n:"Neha Gupta",r:"Member",t:"Delivery",d:"Engineer · ML"},
+  {n:"Kavita Joshi",r:"Manager",t:"Support",d:"Support Lead"},
+  {n:"Sanjay Rao",r:"Senior Member",t:"Support",d:"Support Engineer"},
+  {n:"Guest",r:"Guest",t:"Delivery",d:"Client / visitor"}
+];
+
+const CHAT_THREAD=[
+  {q:"Have we done a legacy ERP migration before?",
+   a:"Yes. Three similar projects found across 2024. The most recent is the ERP Migration for Health Inc (14 weeks, $180,000). Common risk across all three: data quality issues added 2–3 weeks.\n\nExpert to consult for a new migration: Rahul Verma (led all three).",
+   conf:.88, sys:"GraphRAG + rerank", mem:false,
+   sources:[
+     ["proposals/prop_healthinc_erp.md","Scope: migrate finance, HR, supply chain to AWS. 14 weeks, $180K. Risk: data quality (high).",false],
+     ["post_mortems/pm_healthinc_erp.md","Finance data had 2-year gaps. Parallel validation added 3 weeks.",true],
+     ["adrs/adr_001_aws.md","Chose AWS over Azure because client has AWS credits.",true]
+   ],
+   graphPath:[
+     ["Question","Have we done a legacy ERP migration before?","user query"],
+     ["Project","ERP Migration","matched by type=data_migration"],
+     ["— FOR_CLIENT →","Health Inc (Healthcare)","1 hop"],
+     ["— HAD_PROBLEM →","Data Quality","2 hops · recurring"],
+     ["— SOLVED_BY →","Parallel validation","3 hops · solution"],
+     ["— WORKED_ON ←","Rahul Verma","expert recommendation"]
+   ],
+   signals:{retrieval:"0.88 high",llm:"enough evidence",graph:"6 facts followed"}
+  },
+  {q:"Can we use MongoDB for reporting on the Grocery App?",
+   a:"I'd advise against it without a benchmark. In 2024, we tried MongoDB for reporting on Retail Corp's CRM project. Loyalty reports took 40+ seconds with MongoDB aggregation pipelines, versus ~3 seconds with PostgreSQL materialized views.\n\nThat decision is recorded in ADR-004 by Rahul Verma. If you still want MongoDB, run a benchmark with realistic volume first.",
+   conf:.9, sys:"GraphRAG + rerank", mem:false, triedBefore:"MongoDB was rejected for reporting in 2024 on the Retail Corp CRM project — loyalty reports were 40s+ versus 3s on PostgreSQL.",
+   sources:[
+     ["adrs/adr_004_postgresql_reporting.md","MongoDB rejected: aggregation pipelines took 40+ seconds.",true],
+     ["post_mortems/pm_crm_retailcorp.md","MongoDB reporting test ran 40+ seconds; switched to PostgreSQL.",true]
+   ],
+   graphPath:[
+     ["Decision","ADR-004: PostgreSQL over MongoDB","retrieved by topic"],
+     ["— SUPERSEDED_PROPOSAL →","MongoDB for reporting","rejected alternative"],
+     ["— EVIDENCED_IN →","pm_crm_retailcorp.md","provenance"]
+   ],
+   signals:{retrieval:"0.90 high",llm:"enough evidence",graph:"3 facts followed"}
+  }
+];
+
+const MEMORY=[
+  {q:"How do we restart the nightly backup job?",a:"Clear the Redis session queue first, then restart the backup job and monitor it for 10 minutes.",by:"Sanjay Rao",at:"2025-01-14",src:"runbooks/redis_session_queue.md",active:true},
+  {q:"Why did we switch consent tracking to batch processing?",a:"Legacy consent DB could not handle real-time load (4,000 vs 10,000 req/sec). Batch every 5 minutes was accepted by the client's DPO.",by:"Sunita Patel",at:"2024-11-20",src:"adrs/adr_003_batch_consent.md",active:true},
+  {q:"What is our standard GDPR kickoff checklist?",a:"1. Data mapping 2. Consent audit 3. DPO alignment 4. Batch-vs-realtime decision 5. Audit trail requirements.",by:"Sunita Patel",at:"2024-10-08",src:"delivery/gdpr_checklist.md",active:true},
+  {q:"Who handles the Bank A environment onboarding?",a:"Vikram Singh. He created the standard EKS onboarding checklist after the Bank A migration.",by:"Vikram Singh",at:"2024-08-22",src:"runbooks/eks_onboarding.md",active:true},
+  {q:"Do we use OpenShift for banking Kubernetes?",a:"No — rejected in 2024. Bank A evaluation flagged licensing cost concerns. We chose managed EKS instead.",by:"Priya Sharma",at:"2024-05-02",src:"adrs/adr_005_managed_eks.md",active:true},
+  {q:"What did we quote for the Manufacturing Co ERP?",a:"$150,000 for a 10-week migration. Final delivery was 11 weeks (1 week over).",by:"Priya Sharma",at:"2023-12-01",src:"pricing/pricing_mfgco_erp.md",active:false}
+];
+
+const ESCALATIONS=[
+  {id:1,q:"How do we handle a client that wants real-time analytics on a legacy warehouse?",by:"Neha Gupta",ex:"Rahul Verma",st:"pending",at:"2026-10-20"},
+  {id:2,q:"What is our pricing strategy for mid-sized retail clients?",by:"Vikram Singh",ex:"Priya Sharma",st:"pending",at:"2026-10-21"},
+  {id:3,q:"How do we onboard a new DPO at an existing healthcare client?",by:"Neha Gupta",ex:"Sunita Patel",st:"done",at:"2026-10-15",a:"Send the standard DPO handover pack: consent log export, data map, incident history. Schedule a 1-hour walkthrough. Use the GDPR Health Inc template."}
+];
+
+const REVIEW=[
+  {type:"Extracted decision",text:"Chose AWS over Azure because of existing AWS credits.",src:"proposals/prop_healthinc_erp.md",conf:64},
+  {type:"Extracted problem",text:"Duplicate customer records (38,000) after CRM import.",src:"post_mortems/pm_crm_retailcorp.md",conf:49},
+  {type:"Extracted solution",text:"Clear Redis session queue before nightly backup.",src:"tickets/ticket_retailcorp_jan2025.json",conf:62},
+  {type:"Extracted decision",text:"Rejected MongoDB for reporting — 40s+ query times.",src:"adrs/adr_004_postgresql_reporting.md",conf:67},
+  {type:"Member save request",text:"Neha proposed: standardize on pgvector for our internal vector DBs.",src:"Slack #delivery",conf:51}
+];
+
+const TIMELINE=[
+  {d:"2023-06",t:"Manufacturing Co — ERP Migration",type:"Project",c:"ok",note:"10 weeks · $150K · data quality issue added 1 week"},
+  {d:"2024-02",t:"Health Inc — ERP proposal submitted",type:"Decision",c:"pr",note:"$180K, 14 weeks · AWS chosen over Azure"},
+  {d:"2024-03",t:"ADR-001: AWS over Azure",type:"Decision",c:"pr",note:"Client had AWS credits; team had AWS experience"},
+  {d:"2024-04",t:"Health Inc — data quality gaps found",type:"Problem",c:"wn",note:"Finance data 2-year gaps · parallel validation adopted"},
+  {d:"2024-05",t:"ADR-004: PostgreSQL over MongoDB",type:"Decision",c:"pr",note:"MongoDB reporting 40s+, PostgreSQL 3s"},
+  {d:"2024-06",t:"Health Inc ERP — go-live",type:"Milestone",c:"ok",note:"Delivered on schedule · 14 weeks"},
+  {d:"2024-08",t:"Retail Corp CRM — duplicates found",type:"Problem",c:"wn",note:"38,000 duplicate records · fuzzy match dedupe"},
+  {d:"2024-09",t:"CRM Migration — post-mortem",type:"Post-Mortem",c:"pr",note:"1 week delay · $8K absorbed · template updated"},
+  {d:"2024-10",t:"ADR-005: Managed EKS over self-managed",type:"Decision",c:"pr",note:"Bank A · audit evidence + cost"},
+  {d:"2024-11",t:"GDPR Health Inc — batch consent chosen",type:"Decision",c:"pr",note:"Real-time failed at 4K req/s · batch accepted by DPO"},
+  {d:"2025-01",t:"Nightly server restarts — Redis issue",type:"Incident",c:"bd",note:"Retail Corp · cleared session queue · runbook created"}
+];
+
+const EXPERTS=[
+  {name:"Rahul Verma",role:"Senior Engineer",team:"Delivery",skills:{ERP:5,"Data Migration":5,AWS:4,Kubernetes:2,GDPR:2,MongoDB:2}},
+  {name:"Sunita Patel",role:"Tech Lead",team:"Delivery",skills:{ERP:3,"Data Migration":3,AWS:3,Kubernetes:3,GDPR:5,MongoDB:1}},
+  {name:"Vikram Singh",role:"Engineer",team:"Delivery",skills:{ERP:1,"Data Migration":2,AWS:3,Kubernetes:5,GDPR:1,MongoDB:1}},
+  {name:"Neha Gupta",role:"Engineer",team:"Delivery",skills:{ERP:1,"Data Migration":2,AWS:2,Kubernetes:2,GDPR:1,MongoDB:3}},
+  {name:"Sanjay Rao",role:"Support Engineer",team:"Support",skills:{ERP:1,"Data Migration":1,AWS:2,Kubernetes:3,GDPR:1,MongoDB:3}},
+  {name:"Priya Sharma",role:"Pre-Sales Manager",team:"Pre-Sales",skills:{ERP:3,"Data Migration":3,AWS:3,Kubernetes:2,GDPR:2,MongoDB:1}}
+];
+
+const EVAL_ROWS=[
+  {sys:"LLM only (no retrieval)",acc:"42%",cite:"—",hall:"31%",multi:"22%",dec:"18%"},
+  {sys:"Standard RAG (vector)",acc:"61%",cite:"78%",hall:"9%",multi:"34%",dec:"41%"},
+  {sys:"RAG + reranking",acc:"68%",cite:"88%",hall:"7%",multi:"39%",dec:"48%"},
+  {sys:"Nova (GraphRAG + expert routing)",acc:"78%",cite:"94%",hall:"4%",multi:"66%",dec:"72%",highlight:true}
+];
+
+const GRAPH={
+  nodes:[
+    {id:"rahul",l:"Rahul Verma",t:"Person"},
+    {id:"sunita",l:"Sunita Patel",t:"Person"},
+    {id:"vikram",l:"Vikram Singh",t:"Person"},
+    {id:"neha",l:"Neha Gupta",t:"Person"},
+    {id:"sanjay",l:"Sanjay Rao",t:"Person"},
+    {id:"healthinc",l:"Health Inc",t:"Client"},
+    {id:"retail",l:"Retail Corp",t:"Client"},
+    {id:"banka",l:"Bank A",t:"Client"},
+    {id:"erp",l:"ERP Migration",t:"Project"},
+    {id:"crm",l:"CRM Migration",t:"Project"},
+    {id:"gdpr",l:"GDPR Compliance",t:"Project"},
+    {id:"k8s",l:"K8s Migration",t:"Project"},
+    {id:"dataq",l:"Data Quality",t:"Problem"},
+    {id:"consent",l:"Real-time Consent",t:"Problem"},
+    {id:"restart",l:"Nightly Restarts",t:"Problem"},
+    {id:"batch",l:"Batch Processing",t:"Solution"},
+    {id:"redis",l:"Clear Redis Queue",t:"Solution"},
+    {id:"adr1",l:"ADR-001 AWS",t:"Decision"},
+    {id:"adr4",l:"ADR-004 PostgreSQL",t:"Decision"},
+    {id:"adr5",l:"ADR-005 EKS",t:"Decision"}
+  ],
+  edges:[
+    ["rahul","erp","WORKED_ON"],["rahul","crm","WORKED_ON"],["sunita","gdpr","WORKED_ON"],
+    ["sunita","erp","WORKED_ON"],["vikram","k8s","WORKED_ON"],["neha","crm","WORKED_ON"],
+    ["erp","healthinc","FOR_CLIENT"],["crm","retail","FOR_CLIENT"],["gdpr","healthinc","FOR_CLIENT"],["k8s","banka","FOR_CLIENT"],
+    ["erp","dataq","HAD_PROBLEM"],["crm","dataq","HAD_PROBLEM"],["gdpr","consent","HAD_PROBLEM"],["crm","restart","HAD_PROBLEM"],
+    ["dataq","batch","SOLVED_BY"],["consent","batch","SOLVED_BY"],["restart","redis","SOLVED_BY"],
+    ["rahul","dataq","SOLVED"],["sunita","consent","SOLVED"],["sanjay","restart","SOLVED"],
+    ["adr1","erp","DECIDED_FOR"],["adr4","crm","DECIDED_FOR"],["adr5","k8s","DECIDED_FOR"]
+  ]
+};
+const TC={Person:"#f97316",Client:"#16a34a",Project:"#2563eb",Problem:"#dc2626",Solution:"#9333ea",Decision:"#0891b2"};
+
+const NAV=[["landing","🎯","Problem & Impact"],["chat","💬","Chat"],["memory","🧠","Memory"],["graph","🕸️","Knowledge Graph"],["timeline","🕒","Decision Timeline"],["eval","📊","Evaluation Results"],["experts","👥","Expertise Map"],["review","📋","Review Queue"],["admin","⚙️","Admin Panel"],["runbook","🔧","Runbook"],["onboarding","🎓","Onboarding"]];
+
+const S={view:"landing",user:null,thread:[],chatInput:"",chatTurns:[],citeOpen:null,triedWarn:false,selectedNode:null,evalTab:"Results",adminTab:"Overview",reviewSearch:"",memSearch:"",reviewStatus:{},runbookText:"Server restarts every night around 2am",runbookGenerated:false};
+
+// ============ RENDER HELPERS ============
+function confidenceBadge(c){
+  if(c>=.7)return`<span class="bg ok">🟢 High · ${Math.round(c*100)}%</span>`;
+  if(c>=.4)return`<span class="bg wn">🟡 Medium · ${Math.round(c*100)}%</span>`;
+  return`<span class="bg bd">🔴 Low · ${Math.round(c*100)}%</span>`;
+}
+
+function renderChatTurn(t,i){
+  return `<div>
+    <div class="turn-q">You asked: <b>${esc(t.q)}</b></div>
+    <div class="card">
+      ${t.triedBefore?`<div class="banner warn">⚠️ <b>Tried before:</b> ${esc(t.triedBefore)}</div>`:""}
+      ${confidenceBadge(t.conf)}
+      <span class="bg pu">${t.sys}</span>
+      <div style="white-space:pre-line;margin:12px 0">${esc(t.a)}</div>
+
+      <div style="font-weight:600;margin-top:14px">Sources (${t.sources.length})</div>
+      ${t.sources.map((s,ci)=>{const oi=S.citeOpen===i+"-"+ci;return `<div class="src ${oi?"open":""}" onclick="toggleCite('${i}-${ci}')">📄 <b>${esc(s[0])}</b>${s[2]?' <span class="bg bd" style="font-size:10px">private</span>':''} — ${esc(s[1])}<div class="full"><b>Full text:</b> ${esc(s[1])}</div></div>`}).join("")}
+
+      <details style="margin-top:12px" ${i===1?"open":""}>
+        <summary style="cursor:pointer;font-weight:600;font-size:13px">🕸️ Why this answer? (multi-hop reasoning path)</summary>
+        <div class="path">
+          ${t.graphPath.map((p,pi)=>`<div class="step"><div class="n">${pi+1}</div><div><b>${esc(p[0])}</b> → ${esc(p[1])}<div class="r">${esc(p[2])}</div></div></div>`).join("")}
+        </div>
+        <div class="signal">
+          <div><div class="v ok">${t.signals.retrieval}</div>Retrieval score</div>
+          <div><div class="v ok">${t.signals.llm}</div>LLM self-check</div>
+          <div><div class="v ok">${t.signals.graph}</div>Graph coverage</div>
+        </div>
+        <div class="m">Confidence = combination of 3 signals. Escalates to expert when 2 of 3 are weak.</div>
+      </details>
+
+      <div class="row" style="margin-top:14px;border-top:1px solid var(--bd);padding-top:12px">
+        <button type="button" class="b o" onclick="giveFeedback(${i},'Helpful')">👍 Helpful</button>
+        <button type="button" class="b o" onclick="giveFeedback(${i},'Not helpful')">👎 Not helpful</button>
+        <button type="button" class="b" onclick="saveChatMemory(${i})">💾 Save to memory</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderGraph(){
+  const svgW=850,svgH=380;
+  const pos={};
+  ["Person","Project","Client","Problem","Solution","Decision"].forEach((cat,ci)=>{
+    GRAPH.nodes.filter(n=>n.t===cat).forEach((n,ri)=>{
+      pos[n.id]=[80+ci*135,40+ri*55];
+    });
+  });
+  const edges=GRAPH.edges.map((e,i)=>{
+    const a=pos[e[0]],b=pos[e[1]];
+    const mx=(a[0]+b[0])/2,my=(a[1]+b[1])/2-18;
+    const hl=S.selectedNode&&(S.selectedNode===e[0]||S.selectedNode===e[1]);
+    return `<path d="M ${a[0]} ${a[1]} Q ${mx} ${my} ${b[0]} ${b[1]}" stroke="${hl?"var(--pb)":"#cbd5e1"}" stroke-width="${hl?2.5:1.2}" fill="none" marker-end="url(#ar${i})" opacity="${S.selectedNode&&!hl?0.15:0.7}"/>
+    <defs><marker id="ar${i}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="${hl?"#4f46e5":"#cbd5e1"}"/></marker></defs>`;
+  }).join("");
+  const nodes=GRAPH.nodes.map(n=>{
+    const p=pos[n.id];
+    const hl=S.selectedNode===n.id;
+    const dim=S.selectedNode&&!hl&&!GRAPH.edges.some(e=>e[0]===S.selectedNode&&e[1]===n.id||e[1]===S.selectedNode&&e[0]===n.id);
+    return `<g style="cursor:pointer;opacity:${dim?0.15:1}" onclick="selectNode('${n.id}')">
+      <rect x="${p[0]-52}" y="${p[1]-15}" width="104" height="30" rx="8" fill="${TC[n.t]}" stroke="${hl?"#0f172a":"none"}" stroke-width="3"/>
+      <text x="${p[0]}" y="${p[1]+4}" text-anchor="middle" font-size="10" fill="#fff" font-weight="600">${esc(n.l)}</text>
+    </g>`;
+  }).join("");
+  const sel=GRAPH.nodes.find(n=>n.id===S.selectedNode);
+  const conns=sel?GRAPH.edges.filter(e=>e[0]===sel.id||e[1]===sel.id).map(e=>{
+    const other=e[0]===sel.id?e[1]:e[0];const dir=e[0]===sel.id?"→":"←";
+    const on=GRAPH.nodes.find(n=>n.id===other);
+    return `<div style="padding:6px 0;font-size:13px">${dir} <span class="m">${e[2]}</span> <b>${on.l}</b></div>`;
+  }).join(""):"";
+  return `<h1>🕸️ Knowledge Graph</h1>
+  <p class="s">Every decision, problem, and solution is a node. Every relationship is an edge. The graph is what lets us answer multi-hop questions that plain search cannot.</p>
+  <div class="legend">${Object.keys(TC).map(t=>`<span style="background:${TC[t]}">${t}</span>`).join("")}</div>
+  <div style="display:grid;grid-template-columns:1fr 260px;gap:14px">
+    <div class="card" style="padding:8px;overflow:auto">
+      <svg viewBox="0 0 ${svgW} ${svgH}" style="width:100%;min-width:760px">
+        ${edges}${nodes}
+      </svg>
+    </div>
+    <div class="card" style="height:fit-content">
+      ${sel?`<b style="font-size:16px">${esc(sel.l)}</b><div style="margin:6px 0"><span class="bg" style="background:${TC[sel.t]};color:#fff;border:0">${sel.t}</span></div>
+      <div style="font-weight:600;font-size:12px;margin-top:14px;color:var(--mut)">CONNECTIONS (${GRAPH.edges.filter(e=>e[0]===sel.id||e[1]===sel.id).length})</div>
+      ${conns}`:`<div class="m">Click any node to inspect its connections.</div>`}
+    </div>
+  </div>`;
+}
+
+function renderLanding(){
+  return `<h1 style="font-size:26px">🎯 What this project solves</h1>
+  <p class="s">A real business problem, measured and solved.</p>
+
+  <div class="banner hero">
+    <div style="font-size:18px;font-weight:700;margin-bottom:6px">Consulting firms lose knowledge every day.</div>
+    <div style="color:#312e81;line-height:1.6">
+      Proposals take <b>3 days</b> instead of 3 hours because old ones cannot be found.<br>
+      The same mistake is repeated after 18 months because the lesson lives in a PDF nobody reads.<br>
+      Experts are impossible to find — <b>60% of the time</b> is wasted searching for who knows what.
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px">What Nova Memory Agent does</h3>
+  <div class="grid">
+    <div class="stat"><div style="font-size:20px;margin-bottom:6px">📄</div><b>Answers with citations</b><div class="m" style="margin-top:6px">Every claim is traced back to the exact source document — not a guess.</div></div>
+    <div class="stat"><div style="font-size:20px;margin-bottom:6px">🤔</div><b>Admits when it doesn't know</b><div class="m" style="margin-top:6px">Instead of hallucinating, it routes to the person who solved it before.</div></div>
+    <div class="stat"><div style="font-size:20px;margin-bottom:6px">🕸️</div><b>Reasons across the graph</b><div class="m" style="margin-top:6px">Answers "why" and multi-hop questions that plain search cannot.</div></div>
+    <div class="stat"><div style="font-size:20px;margin-bottom:6px">🔄</div><b>Learns from every answer</b><div class="m" style="margin-top:6px">When an expert replies, the answer becomes permanent team memory.</div></div>
+    <div class="stat"><div style="font-size:20px;margin-bottom:6px">⚠️</div><b>Prevents repeated mistakes</b><div class="m" style="margin-top:6px">Warns when a rejected proposal is being proposed again.</div></div>
+    <div class="stat"><div style="font-size:20px;margin-bottom:6px">🔒</div><b>Respects confidentiality</b><div class="m" style="margin-top:6px">Client A's pricing never leaks to Client B's team.</div></div>
+  </div>
+
+  <h3 style="margin-top:28px">Impact we measured (120-question benchmark)</h3>
+  <div class="grid">
+    <div class="stat"><div class="v">+17 pp</div><div class="l">Answer accuracy vs standard RAG</div><div class="h">78% vs 61%</div></div>
+    <div class="stat"><div class="v">+32 pp</div><div class="l">Multi-hop question accuracy</div><div class="h">66% vs 34%</div></div>
+    <div class="stat"><div class="v">−5 pp</div><div class="l">Hallucination rate</div><div class="h">4% vs 9%</div></div>
+    <div class="stat"><div class="v">94%</div><div class="l">Citation precision</div><div class="h">Every claim traceable</div></div>
+  </div>
+
+  <h3 style="margin-top:28px">Who uses it, and how</h3>
+  <div class="grid">
+    <div class="stat"><b>Pre-Sales</b><div class="m" style="margin-top:6px">Finds past proposals, correct pricing, and case studies in seconds. Proposal writing time drops from days to hours.</div></div>
+    <div class="stat"><b>Delivery</b><div class="m" style="margin-top:6px">Finds past approaches, warnings about what went wrong, and who has solved this before.</div></div>
+    <div class="stat"><b>Support</b><div class="m" style="margin-top:6px">Finds past incidents and fixes. Runbooks generated from real history.</div></div>
+    <div class="stat"><b>New hires</b><div class="m" style="margin-top:6px">Onboarding that actually knows the company — not a static wiki.</div></div>
+  </div>
+
+  <div class="banner ok" style="margin-top:24px">
+    <b>Why this is not another chatbot:</b> Most systems wait to be asked. Nova speaks up when a past mistake is being repeated, admits when it does not know, routes to a real person, and remembers every human answer. That loop is the difference between a demo and a product.
+  </div>`;
+}
+
+function renderEval(){
+  return `<h1>📊 Evaluation Results</h1>
+  <p class="s">120 questions across 5 categories. Four systems compared. Every number reproducible from the repo.</p>
+  <div class="tabs">${["Results","Breakdown","Methodology"].map(t=>`<button class="${S.evalTab===t?"on":""}" onclick="setEvalTab('${t}')">${t}</button>`).join("")}</div>
+  ${S.evalTab==="Results"?`
+    <div class="card" style="padding:0;overflow:hidden">
+      <table>
+        <thead><tr><th>System</th><th>Accuracy</th><th>Citation precision</th><th>Hallucination</th><th>Multi-hop</th><th>Decision recall</th></tr></thead>
+        <tbody>
+          ${EVAL_ROWS.map(r=>`<tr style="${r.highlight?'background:#eef2ff;font-weight:600':''}"><td>${r.sys}</td><td>${r.acc}</td><td>${r.cite}</td><td>${r.hall}</td><td>${r.multi}</td><td>${r.dec}</td></tr>`).join("")}
+        </tbody>
+      </table>
+    </div>
+    <div class="banner ok" style="margin-top:16px">
+      <b>Headline:</b> Nova improves multi-hop accuracy from 34% → 66% (+32 points) while cutting hallucination rate from 9% → 4%. Citation precision reaches 94%.
+    </div>
+  `:S.evalTab==="Breakdown"?`
+    <div class="grid">
+      <div class="stat"><div class="v">40</div><div class="l">Single-hop questions</div><div class="m" style="margin-top:6px">Accuracy 91% (RAG: 88%)</div></div>
+      <div class="stat"><div class="v">30</div><div class="l">Multi-hop questions</div><div class="h">Accuracy 66% (RAG: 34%)</div></div>
+      <div class="stat"><div class="v">20</div><div class="l">Decision / why questions</div><div class="h">Accuracy 72% (RAG: 41%)</div></div>
+      <div class="stat"><div class="v">20</div><div class="l">Who-knows-what</div><div class="h">Top-1 expert 84%</div></div>
+      <div class="stat"><div class="v">10</div><div class="l">Unanswerable questions</div><div class="h">Escalated correctly 90%</div></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <b>Where Nova wins over RAG</b>
+      <div class="m" style="margin-top:8px;line-height:1.7">
+      • <b>Multi-hop</b>: questions needing 2+ connections ("which clients had issue X and who led them") — graph traversal wins decisively.<br>
+      • <b>Why questions</b>: "why was MongoDB rejected?" — retrieval finds the ADR, but only the graph connects "MongoDB" → "ADR-004" → "rejected".<br>
+      • <b>Repeated-mistake prevention</b>: RAG returns an answer, Nova returns a warning first.
+      </div>
+    </div>
+    <div class="card">
+      <b>Where Nova costs more</b>
+      <div class="m" style="margin-top:8px;line-height:1.7">
+      • <b>Latency</b>: p50 5.2s vs RAG's 3.1s (graph traversal + rerank adds ~2s).<br>
+      • <b>Setup complexity</b>: needs both a vector DB and Neo4j.<br>
+      • <b>Ingestion cost</b>: LLM extraction per chunk. One-time cost, ~$0.40 for 41 docs.
+      </div>
+    </div>
+  `:`
+    <div class="card">
+      <b>Test set</b>
+      <div class="m" style="margin-top:8px;line-height:1.8">
+      • 120 questions total<br>
+      • 60 written manually, 60 LLM-generated then human-verified<br>
+      • Split: 60 dev (used to tune), 60 test (locked, only run at the end)<br>
+      • Every question has: correct answer, expected citations, expected expert (if routing), expected behavior (answer vs escalate)
+      </div>
+    </div>
+    <div class="card">
+      <b>Metrics defined</b>
+      <div class="m" style="margin-top:8px;line-height:1.8">
+      • <b>Accuracy</b> = correct / total. Correct defined by LLM-judge with human spot-check (87% agreement).<br>
+      • <b>Citation precision</b> = answers with correct cited doc / answers given.<br>
+      • <b>Hallucination rate</b> = answers with no supporting citation / answers given.<br>
+      • <b>Multi-hop accuracy</b> = correct on the 30-question multi-hop subset.<br>
+      • <b>Decision recall</b> = known decisions retrieved when relevant / total tested.
+      </div>
+    </div>
+    <div class="card">
+      <b>Reproducibility</b>
+      <div class="m" style="margin-top:8px;line-height:1.8">
+      • Test set: <code>eval/questions.json</code> (committed)<br>
+      • Judge model: Llama 3.3 70B via Groq<br>
+      • Human verification: 20% random sample per run<br>
+      • Results: <code>eval/results_sem2.md</code><br>
+      • One command: <code>python -m eval.run</code>
+      </div>
+    </div>
+  `}`;
+}
+
+function renderExperts(){
+  const skills=Object.keys(EXPERTS[0].skills);
+  const heat=EXPERTS.map(p=>`<div class="l">${esc(p.name)}<div class="m">${p.role} · ${p.team}</div></div>${skills.map(s=>{
+    const lvl=p.skills[s];
+    const col=lvl>=4?"#15803d":lvl===3?"#65a30d":lvl===2?"#ca8a04":"#e5e7eb";
+    const txt=lvl>=4?"#fff":"#374151";
+    return `<div class="c" style="background:${col};color:${txt}">${lvl}/5</div>`;
+  }).join("")}`).join("");
+  return `<h1>👥 Expertise Map</h1>
+  <p class="s">Who knows what, and how deeply. Built automatically from past project work — not a manual skills sheet.</p>
+  <div class="card" style="overflow:auto">
+    <div class="hm">
+      <div class="h" style="text-align:left">Person</div>
+      ${skills.map(s=>`<div class="h">${s}</div>`).join("")}
+      ${heat}
+    </div>
+  </div>
+  <div class="row" style="margin-top:16px;font-size:12px">
+    <span style="background:#15803d;color:#fff;padding:4px 10px;border-radius:6px">5 = expert</span>
+    <span style="background:#65a30d;color:#fff;padding:4px 10px;border-radius:6px">3 = working</span>
+    <span style="background:#ca8a04;color:#fff;padding:4px 10px;border-radius:6px">2 = assisted</span>
+    <span style="background:#e5e7eb;color:#374151;padding:4px 10px;border-radius:6px">1 = aware</span>
+  </div>
+  <div class="banner ok" style="margin-top:20px">
+    <b>Why this matters:</b> When the system says "I don't know, but Rahul Verma solved this twice" — that suggestion comes from this map, derived from real project work, not a self-declared skill list. Trustworthy expert routing.
+  </div>`;
+}
+
+function renderTimeline(){
+  return `<h1>🕒 Decision Timeline</h1>
+  <p class="s">Every decision, problem, and milestone in Nova's history — in the order it happened. This is what "organizational memory" actually looks like.</p>
+  <div style="position:relative;padding-left:30px">
+    <div style="position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--bd)"></div>
+    ${TIMELINE.map(t=>`
+      <div style="position:relative;margin-bottom:16px">
+        <div style="position:absolute;left:-28px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--pb);border:2px solid var(--card)"></div>
+        <div class="card" style="margin-bottom:0">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+            <div><span class="bg pr" style="font-size:10px">${t.type}</span><b>${esc(t.t)}</b></div>
+            <div class="m" style="font-size:11px">${t.d}</div>
+          </div>
+          <div class="m" style="margin-top:6px">${esc(t.note)}</div>
+        </div>
+      </div>
+    `).join("")}
+  </div>
+  <div class="banner ok" style="margin-top:12px">
+    <b>Why this matters:</b> A chatbot forgets yesterday. Nova remembers every decision as a fact with a date, a person, and a reason. Ask "why did we choose AWS" six months later — it can tell you, with a citation to the original ADR.
+  </div>`;
+}
+
+function renderChat(){
+  const turns=CHAT_THREAD.concat(S.chatTurns);
+  return `<div style="display:grid;grid-template-columns:1fr 220px;gap:18px">
+    <div>
+      <form onsubmit="submitChat(event)">
+        <input id="chatInput" style="width:100%;border:2px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:10px" placeholder="Ask a question…" value="${esc(S.chatInput)}">
+      </form>
+      <div class="row" style="margin-bottom:16px">
+        ${["Have we done a legacy ERP migration before?","Can we use MongoDB for reporting on the Grocery App?","Who knows Kubernetes for banking?"].map(q=>`<button type="button" class="chip" onclick="askQuestion('${q.replace(/'/g,"\\'")}')">${esc(q)}</button>`).join("")}
+      </div>
+      <div class="thread">
+        ${turns.map((t,i)=>renderChatTurn(t,i)).join("")}
+      </div>
+    </div>
+    <div class="card" style="height:fit-content">
+      <b style="font-size:12px">ASKED RECENTLY</b>
+      <div class="m" style="margin-top:8px;line-height:1.8">
+      • Have we done a legacy ERP migration?<br>
+      • Can we use MongoDB for reporting?<br>
+      • What did we quote for Bank A K8s?<br>
+      • Who knows Kubernetes for banking?<br>
+      • What is our GDPR approach?
+      </div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--bd)">
+        <b style="font-size:12px">SYSTEM STATUS</b>
+        <div class="m" style="margin-top:8px;line-height:1.8">
+        <span class="env"><span class="dot"></span>Backend · live</span><br><br>
+        <span class="env"><span class="dot"></span>Neo4j · 342 nodes</span><br><br>
+        <span class="env"><span class="dot"></span>Chroma · 1,847 chunks</span>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderMemory(){
+  const list=S.memSearch?MEMORY.filter(m=>m.q.toLowerCase().includes(S.memSearch.toLowerCase())||m.a.toLowerCase().includes(S.memSearch.toLowerCase())):MEMORY;
+  return `<h1>🧠 Saved Memory</h1>
+  <p class="s">Every answer experts gave. Active memory is used for similar questions. Outdated memory is kept but ignored.</p>
+  <input placeholder="🔍 Search memory…" value="${esc(S.memSearch)}" oninput="S.memSearch=this.value;render();" style="width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;margin-bottom:14px">
+  ${list.map(m=>`<div class="card" style="opacity:${m.active?1:.55}">
+    <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap">
+      <b>${esc(m.q)}</b>
+      <span class="bg ${m.active?"ok":""}" style="font-size:10px">${m.active?"active":"outdated"}</span>
+    </div>
+    <p style="margin:8px 0">${esc(m.a)}</p>
+    <div class="m">Saved by ${esc(m.by)} · ${esc(m.at)} · source: ${esc(m.src)}</div>
+  </div>`).join("")}
+  ${list.length===0?`<div class="empty">No matches</div>`:""}`;
+}
+
+function renderReview(){
+  const shown=REVIEW.map((r,i)=>({r,i})).filter(({r})=>!S.reviewSearch||r.text.toLowerCase().includes(S.reviewSearch.toLowerCase()));
+  return `<h1>📋 Review Queue</h1>
+  <p class="s">Human-in-the-loop. Nothing enters permanent memory without review. This is what makes the system trustworthy.</p>
+  <input placeholder="🔍 Search facts…" value="${esc(S.reviewSearch)}" oninput="S.reviewSearch=this.value;render()" style="width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;margin-bottom:14px">
+  <div class="row" style="margin-bottom:12px">
+    <button type="button" class="b o" onclick="reviewAll('approved')">✅ Approve all shown</button>
+    <button type="button" class="b o" onclick="reviewAll('rejected')">❌ Reject all shown</button>
+  </div>
+  ${shown.map(({r,i})=>`
+    <div class="card" style="${S.reviewStatus[i]==='rejected'?'opacity:.55':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <span class="bg pr">${esc(r.type)}</span>
+        <span class="bg ${r.conf>=60?"wn":"bd"}" style="font-size:10px">confidence ${r.conf}%</span>
+      </div>
+      <p style="margin:10px 0">${esc(r.text)}</p>
+      <div class="m">Source: ${esc(r.src)}</div>
+      <div class="row" style="margin-top:10px">
+        <button type="button" class="b g" onclick="reviewFact(${i},'approved')">✅ Approve</button>
+        <button type="button" class="b r" onclick="reviewFact(${i},'rejected')">❌ Reject</button>
+        <button type="button" class="b o" onclick="editFact(${i})">✏️ Edit</button>
+      </div>
+    </div>
+  `).join("")}`;
+}
+
+function renderAdmin(){
+  return `<h1>⚙️ Admin Panel</h1>
+  <div class="tabs">${["Overview","Users","Analytics","Data Sources","Audit Log"].map(t=>`<button class="${S.adminTab===t?"on":""}" onclick="setAdminTab('${t}')">${t}</button>`).join("")}</div>
+  ${S.adminTab==="Overview"?`
+    <div class="grid">
+      <div class="stat"><div class="v">247</div><div class="l">Questions this week</div><div class="h">+12% vs last week</div></div>
+      <div class="stat"><div class="v">73%</div><div class="l">Answered without human</div><div class="h">Target: 70%</div></div>
+      <div class="stat"><div class="v">27%</div><div class="l">Escalated to expert</div><div class="h">Down from 41% last month</div></div>
+      <div class="stat"><div class="v">82%</div><div class="l">Average confidence</div><div class="h">Healthy</div></div>
+    </div>
+    <h3 style="margin-top:24px">Top questions this week</h3>
+    <div class="card">
+      <div class="m" style="line-height:2">
+      1. Have we done ERP migration before? (18×)<br>
+      2. Who knows Kubernetes for banking? (14×)<br>
+      3. GDPR approach in healthcare? (11×)<br>
+      4. Server restart issues? (9×)<br>
+      5. What did we quote for Bank A? (7×)
+      </div>
+    </div>
+    <h3 style="margin-top:20px">Knowledge gaps (asked but not answered)</h3>
+    <div class="card">
+      <div class="m" style="line-height:2">
+      🔴 AI/ML model deployment process — asked 12×, no source<br>
+      🔴 Data engineering team contacts — asked 8×, no source<br>
+      🔴 Multi-cloud architecture standards — asked 6×, no source
+      </div>
+    </div>
+    <div class="banner ok" style="margin-top:16px">
+      <b>What this tells us:</b> The team asks more questions than we can answer (27% escalate). The gaps list is a direct roadmap for what documents to write next.
+    </div>
+  `:S.adminTab==="Users"?`
+    <div class="card" style="padding:0;overflow:hidden">
+      <table>
+        <thead><tr><th>Name</th><th>Role</th><th>Team</th><th>Status</th></tr></thead>
+        <tbody>${USERS.slice(1,9).map(u=>`<tr><td>${esc(u.n)}</td><td>${esc(u.r)}</td><td>${esc(u.t)}</td><td><span class="bg ok" style="font-size:10px">active</span></td></tr>`).join("")}</tbody>
+      </table>
+    </div>
+  `:S.adminTab==="Analytics"?`
+    <div class="card"><b>Usage by team</b>
+      <div class="m" style="margin-top:10px;line-height:2">
+      Pre-Sales · 89 questions · 78% answered<br>
+      Delivery · 124 questions · 71% answered<br>
+      Support · 34 questions · 68% answered
+      </div>
+    </div>
+    <div class="card"><b>Most-cited documents</b>
+      <div class="m" style="margin-top:10px;line-height:2">
+      1. proposals/prop_healthinc_erp.md · 34 citations<br>
+      2. post_mortems/pm_crm_retailcorp.md · 28 citations<br>
+      3. adrs/adr_004_postgresql_reporting.md · 22 citations<br>
+      4. post_mortems/pm_gdpr_healthinc.md · 19 citations
+      </div>
+    </div>
+  `:S.adminTab==="Data Sources"?`
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div><b>📁 Folder ingestion</b><div class="m">data/ · 41 documents · last sync 2h ago</div></div>
+        <span class="bg ok" style="font-size:10px">connected</span>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div><b>💬 Slack</b><div class="m">3 channels · last sync 15m ago</div></div>
+        <span class="bg ok" style="font-size:10px">connected</span>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div><b>📝 Notion</b><div class="m">2 workspaces · last sync 1h ago</div></div>
+        <span class="bg ok" style="font-size:10px">connected</span>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><b>💻 GitHub Enterprise</b><div class="m">Public repos only</div></div>
+        <span class="bg" style="font-size:10px">not connected</span>
+      </div>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button class="b" onclick="toast('Re-ingestion started')">🔄 Re-run ingestion</button>
+      <button class="b o" onclick="toast('Health check passed')">🩺 Run health check</button>
+    </div>
+  `:`
+    <div class="card">
+      <div class="m" style="line-height:2">
+      2026-10-24 14:32 · Rahul Verma · saved answer to "How do we restart the backup job?"<br>
+      2026-10-24 14:15 · Neha Gupta · asked "What is our GDPR approach?" · escalated to Sunita<br>
+      2026-10-24 13:50 · Admin · approved 3 extracted facts<br>
+      2026-10-24 13:22 · Sunita Patel · answered "GDPR kickoff checklist"<br>
+      2026-10-24 11:05 · Priya Sharma · marked outdated "Manufacturing Co pricing 2023"
+      </div>
+    </div>
+  `}`;
+}
+
+function renderRunbook(){
+  const generated=S.runbookGenerated;
+  return `<h1>🔧 Runbook Generator</h1>
+  <p class="s">Describe an incident. Nova builds a runbook from real past tickets and approved solutions.</p>
+  <textarea id="runbookInput" style="width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px" rows="3" placeholder="e.g., server restarts every night at 2am">${esc(S.runbookText)}</textarea>
+  <button type="button" class="b" style="margin-top:10px" onclick="generateRunbook()">✨ Generate runbook</button>
+  ${generated?`<div class="card" style="margin-top:16px">
+    <b>📋 Generated Runbook — ${esc(S.runbookText)}</b>
+    <div style="margin-top:10px"><span class="bg bd">High</span> <span class="m">Based on 3 incidents · 5 tickets · 2 solutions</span></div>
+    <ol style="line-height:1.9;margin-top:10px">
+      <li>Check Redis memory usage on the application server.</li>
+      <li>Inspect session queue size before the nightly backup window.</li>
+      <li>Clear the Redis session queue.</li>
+      <li>Restart the backup job and confirm it completes.</li>
+      <li>Record the outcome and tag the incident.</li>
+    </ol>
+    <div class="m" style="margin-top:12px"><b>Sources:</b> tickets/ticket_retailcorp_jan2025.json · runbooks/redis_session_queue.md · post_mortems/pm_crm_retailcorp.md</div>
+    <div class="row" style="margin-top:12px">
+      <button type="button" class="b" onclick="toast('Runbook saved to memory')">💾 Save runbook</button>
+      <button type="button" class="b o" onclick="copyRunbook()">📋 Copy</button>
+    </div>
+  </div>`:""}`;
+}
+
+function renderOnboarding(){
+  const items=[
+    ["What does Nova Consulting do?","IT and management consulting. We help clients migrate legacy systems to the cloud, meet compliance (GDPR, healthcare), build Kubernetes platforms, and ship ML products. Teams: Pre-Sales, Delivery, Support.","hr/company_overview.md"],
+    ["How are teams organised?","Pre-Sales wins deals. Delivery builds projects. Support keeps clients running. Expert routing routes between them.","hr/company_overview.md"],
+    ["Where do I find past proposals?","Ask the Memory Agent. It searches all past proposals and cites the source. Pricing is visible only to Pre-Sales and Admin.","hr/onboarding.md"],
+    ["What should I do in my first week?","Meet your team lead. Read two past project post-mortems in your area. Ask the agent one real question. Read the 3 most-cited ADRs.","hr/onboarding.md"],
+    ["Who do I ask when I'm stuck?","Ask the Memory Agent first. If it says it doesn't know, it will suggest the right expert. Reply to that expert in the Expert Inbox.","hr/onboarding.md"],
+    ["Where can I see what our company has decided?","Open Decision Timeline in the sidebar. Every decision, problem, and milestone — in order, with sources.","hr/onboarding.md"]
+  ];
+  return `<h1>🎓 Welcome to Nova</h1>
+  <p class="s">Glad you're here. The Memory Agent knows the company — use it.</p>
+  ${items.map((it,i)=>`<details class="card" ${i===0?"open":""}><summary>${it[0]}</summary><p style="margin-top:10px">${it[1]}</p><div class="m" style="margin-top:8px">📄 ${it[2]}</div></details>`).join("")}`;
+}
+
+// ============ ROUTER ============
+const VIEWS={
+  landing:renderLanding,
+  chat:renderChat,
+  memory:renderMemory,
+  graph:renderGraph,
+  timeline:renderTimeline,
+  eval:renderEval,
+  experts:renderExperts,
+  review:renderReview,
+  admin:renderAdmin,
+  runbook:renderRunbook,
+  onboarding:renderOnboarding
+};
+
+function render(){
+  $("#root").innerHTML=`<div class="app">
+    <aside>
+      <div style="font-size:16px;font-weight:700;margin-bottom:4px">🧠 Nova</div>
+      <div class="m" style="margin-bottom:10px">Semester 2 · final view</div>
+      <div class="demo-pill" style="margin-bottom:12px">Mockup — click any screen</div>
+      <nav>${NAV.map(n=>`<button class="nv ${S.view===n[0]?"on":""}" onclick="go('${n[0]}')"><span>${n[1]}</span>${n[2]}</button>`).join("")}</nav>
+      <div style="font-size:11px;color:var(--mut);padding-top:12px;border-top:1px solid var(--bd);line-height:1.7">
+        <div>🐳 Docker · deployed</div>
+        <div>🟢 Neo4j · 342 nodes</div>
+        <div>🟢 Chroma · 1,847 chunks</div>
+        <div>🔗 API · /docs</div>
+      </div>
+    </aside>
+    <div class="wrap">
+      <header>
+        <span style="font-size:13px;color:var(--mut)">Logged in as <b style="color:var(--fg)">Admin</b> · viewing all teams</span>
+        <span class="env" style="margin-left:auto"><span class="dot"></span>prod</span>
+      </header>
+      <main>${(VIEWS[S.view]||renderLanding)()}</main>
+    </div>
+  </div>`;
+}
+
+function go(v){S.view=v;render()}
+function toggleCite(k){S.citeOpen=S.citeOpen===k?null:k;render()}
+function selectNode(id){S.selectedNode=S.selectedNode===id?null:id;render()}
+function setEvalTab(t){S.evalTab=t;render()}
+function setAdminTab(t){S.adminTab=t;render()}
+function toast(m){alert(m)}
+
+function askQuestion(q){
+  const known=CHAT_THREAD.find(t=>t.q===q);
+  const answer=known?{
+    ...known,
+    sources:known.sources.map(s=>s.slice()),
+    graphPath:known.graphPath.map(p=>p.slice()),
+    signals:{...known.signals}
+  }:{
+    q,
+    a:"I could not find an approved answer for that question in this demo. The best next step is to route it to a subject-matter expert.",
+    conf:.32,
+    sys:"Local demo search",
+    mem:false,
+    sources:[["expert_inbox","No approved source matched this question.",false]],
+    graphPath:[["Question",q,"user query"],["Expert Inbox","Needs human follow-up","no approved answer found"]],
+    signals:{retrieval:"0.32 low",llm:"not used",graph:"no matching path"}
+  };
+  S.chatTurns.push(answer);
+  S.chatInput="";
+  render();
+}
+
+function submitChat(event){
+  event.preventDefault();
+  const input=$("#chatInput");
+  const question=input?input.value.trim():"";
+  if(!question){toast("Enter a question first.");return}
+  askQuestion(question);
+}
+
+function giveFeedback(index,feedback){
+  toast(`${feedback} feedback recorded for this demo answer.`);
+}
+
+function saveChatMemory(index){
+  toast("Answer saved to memory for this demo.");
+}
+
+function reviewFact(index,status){
+  S.reviewStatus[index]=status;
+  render();
+  toast(status==="approved"?"Fact approved — will enter memory.":"Fact rejected.");
+}
+
+function reviewAll(status){
+  REVIEW.forEach((r,index)=>{
+    if(!S.reviewSearch||r.text.toLowerCase().includes(S.reviewSearch.toLowerCase()))S.reviewStatus[index]=status;
+  });
+  render();
+  toast(status==="approved"?"All shown facts approved.":"All shown facts rejected.");
+}
+
+function editFact(index){
+  const updated=prompt("Edit this fact:",REVIEW[index].text);
+  if(updated===null)return;
+  const text=updated.trim();
+  if(!text){toast("Fact text cannot be empty.");return}
+  REVIEW[index].text=text;
+  S.reviewStatus[index]="pending";
+  render();
+  toast("Fact updated.");
+}
+
+function generateRunbook(){
+  const input=$("#runbookInput");
+  const text=input?input.value.trim():"";
+  if(!text){toast("Describe an incident first.");return}
+  S.runbookText=text;
+  S.runbookGenerated=true;
+  render();
+}
+
+function copyRunbook(){
+  const text="Runbook: "+S.runbookText+"\n\n1. Check the affected service and recent logs.\n2. Inspect resource usage before the incident window.\n3. Apply the approved mitigation.\n4. Confirm recovery and record the outcome.";
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(()=>toast("Runbook copied.")).catch(()=>toast("Copy was blocked by the browser. Select the runbook text to copy it."));
+    return;
+  }
+  const area=document.createElement("textarea");
+  area.value=text;
+  area.style.position="fixed";
+  area.style.opacity="0";
+  document.body.appendChild(area);
+  area.select();
+  const copied=document.execCommand("copy");
+  area.remove();
+  toast(copied?"Runbook copied.":"Copy was blocked by the browser. Select the runbook text to copy it.");
+}
+
+render();
+</script>
+</body>
+</html>
