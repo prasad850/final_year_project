@@ -8,5 +8,5 @@ def get_model():
         _model = SentenceTransformer('all-MiniLM-L6-v2')
     return _model
 
-def embed(texts: list[str]):
+def embed(texts: list[str])  -> list[list[float]]:
     return get_model().encode(texts).tolist()
