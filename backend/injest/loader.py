@@ -14,18 +14,31 @@ def load_documents(data_dir: str = "data") -> list[dict]:
             "text": path.read_text(encoding="utf-8"),
         })
 
-    for path in Path(data_dir).rglob("*.json"):
-        # Skip the Chroma folder if it lives under data/
-        if "chroma_db" in str(path):
-            continue
-        try:
-            docs.append({
-                "path": str(path),
-                "type": "json",
-                "text": json.dumps(json.loads(path.read_text(encoding="utf-8")), indent=2),
-            })
-        except json.JSONDecodeError:
-            continue
+        for path in Path(data_dir).rglob("*.json"):
+            if "chroma_db" in str(path):
+                continue
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+                
+                # If it's a Slack file (a list of messages)
+                if isinstance(data, list) and len(data) > 0 and "user" in data[0]:
+                    transcript = ""
+                    for msg in data:
+                        transcript += f"{msg.get('user', 'unknown')}: {msg.get('text', '')}\n"
+                    docs.append({
+                        "path": str(path),
+                        "type": "slack_transcript",
+                        "text": transcript,
+                    })
+                else:
+                    # Normal JSON
+                    docs.append({
+                        "path": str(path),
+                        "type": "json",
+                        "text": json.dumps(data, indent=2),
+                    })
+            except json.JSONDecodeError:
+                continue
 
     return docs
 

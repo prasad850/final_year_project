@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2024-05-20
 **Project:** Kubernetes Migration — Bank A
-**Author:** Vikram Singh
+**Decided by:** Vikram Singh
 
 ## Context
 Bank A's platform team is small and new to Kubernetes. Security audits require patched, supported infrastructure.

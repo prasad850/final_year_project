@@ -9,7 +9,7 @@ from backend.rag.answerer import answer as rag_answer
 from backend.agents.router_agent import run_agent
 from backend.injest.vector_store import search, add_chunks
 from backend.injest.embeder import embed
-from backend.injest.vector_store import _get_collection
+from backend.injest.vector_store import get_collection
 
 app = FastAPI(title="Nova Memory Agent")
 
@@ -52,7 +52,7 @@ class SaveRequest(BaseModel):
 
 @app.post("/save")
 def save(req: SaveRequest):
-    col = _get_collection()
+    col = get_collection()
     import time
     col.add(
         embeddings=embed([req.answer]),

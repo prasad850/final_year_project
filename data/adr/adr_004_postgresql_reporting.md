@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2024-06-24
 **Project:** CRM Migration — Retail Corp
-**Author:** Rahul Verma
+**Decided by:** Rahul Verma
 
 ## Context
 Marketing needs loyalty dashboards over 1.2M customers and about 8M orders. In week 4 we tested MongoDB because setup was fast and the schema is flexible.

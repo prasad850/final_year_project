@@ -3,7 +3,7 @@
 **Status:** Superseded by ADR-003
 **Date:** 2024-09-09
 **Project:** GDPR Compliance — Health Inc
-**Author:** Sunita Patel
+**Decided by:** Sunita Patel
 
 ## Context
 Patients can withdraw consent at any time. The client wants withdrawals to take effect immediately. Expected load: 10,000 requests per second at peak.

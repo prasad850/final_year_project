@@ -7,9 +7,9 @@ from backend.rag.confidence import assess
 from backend.rag.retriever import retrieve
 from backend.graph.queries import find_expert_by_keyword, find_expert_by_problem
 from backend.utils.llm import generate
-from backend.ingest.vector_store import add_chunks
-from backend.ingest.embedder import embed
-from backend.ingest.vector_store import _get_collection
+from backend.injest.vector_store import add_chunks
+from backend.injest.embeder import embed
+from backend.injest.vector_store import get_collection
 import time
 
 
@@ -60,7 +60,7 @@ def escalate_node(state: AgentState) -> AgentState:
 def save_node(state: AgentState) -> AgentState:
     """Step 3b: save a human's answer to permanent memory."""
     # In this flow, state["answer"] is the human-provided answer
-    col = _get_collection()
+    col = get_collection()
     text = state["answer"]
     col.add(
         embeddings=embed([text]),

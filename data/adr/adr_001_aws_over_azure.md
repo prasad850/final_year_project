@@ -3,7 +3,7 @@
 **Status:** Accepted
 **Date:** 2024-03-05
 **Project:** ERP Migration — Health Inc
-**Author:** Rahul Verma
+**Decided by:** Rahul Verma
 
 ## Context
 Health Inc must host its migrated ERP in the cloud. The client already holds AWS credits and our delivery team has more AWS experience.

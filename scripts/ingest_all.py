@@ -1,4 +1,9 @@
 """Ingest all documents into Chroma and Neo4j with provenance."""
+from dotenv import load_dotenv
+from pathlib import Path
+load_dotenv()
+import os
+print("KEY LOADED:", (os.getenv("GROQ_API_KEY") or "MISSING")[:12] + "...")
 import time
 from backend.injest.loader import load_documents
 from backend.injest.chunker import chunk_documents
@@ -10,15 +15,17 @@ SKIP_GRAPH_FOLDERS = {"hr"}
 
 
 def should_extract_to_graph(path: str) -> bool:
-    return not any(f"/{f}/" in path for f in SKIP_GRAPH_FOLDERS)
+    parts = Path(path).parts
+    return "hr" not in parts
 
 
 def _infer_team(path: str) -> str:
-    if "/proposals/" in path or "/pricing/" in path or "/clients/" in path or "/case_studies/" in path:
+    parts = Path(path).parts
+    if any(p in parts for p in ["proposals", "pricing", "clients", "case_studies"]):
         return "Pre-Sales"
-    if "/support/" in path:
+    if "support" in parts:
         return "Support"
-    if "/slack/" in path or "/delivery/" in path or "/adrs/" in path or "/post_mortems/" in path:
+    if any(p in parts for p in ["slack", "delivery", "adr", "post_mortems"]):
         return "Delivery"
     return ""
 

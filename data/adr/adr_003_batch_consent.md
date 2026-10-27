@@ -3,7 +3,7 @@
 **Status:** Accepted (supersedes ADR-002)
 **Date:** 2024-10-08
 **Project:** GDPR Compliance — Health Inc
-**Author:** Sunita Patel
+**Decided by:** Sunita Patel
 
 ## Context
 Load tests in week 5 failed. The legacy consent database has 200ms query latency; real-time tracking needs under 20ms. After optimization we reached only 4,000 requests per second against the 10,000 required.
