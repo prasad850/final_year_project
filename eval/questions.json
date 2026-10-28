@@ -1,0 +1,52 @@
+[
+  {
+    "question": "Who decided to use AWS instead of Azure for the ERP hosting?",
+    "expected_answer": "Rahul Verma",
+    "type": "Single-Hop (ADR)"
+  },
+  {
+    "question": "Why did we reject MongoDB for the Retail Corp CRM reporting?",
+    "expected_answer": "aggregation pipelines took 40+ seconds",
+    "type": "Reasoning (ADR)"
+  },
+  {
+    "question": "What is the current active approach for tracking GDPR consent for Health Inc?",
+    "expected_answer": "batch processing",
+    "type": "Superseded Decision (Graph needed)"
+  },
+  {
+    "question": "Who took over the supply chain module for the Health Inc ERP migration?",
+    "expected_answer": "Vikram Singh",
+    "type": "Slack Transcript"
+  },
+  {
+    "question": "What did Priya Sharma say she would do about the finance data gaps?",
+    "expected_answer": "tell the client",
+    "type": "Slack Context"
+  },
+  {
+    "question": "What is the total price and duration for the Bank A Kubernetes migration?",
+    "expected_answer": "$200,000 and 12 weeks",
+    "type": "Single-Hop (Proposal)"
+  },
+  {
+    "question": "What technology did we use for deployments in the Bank A Kubernetes migration?",
+    "expected_answer": "ArgoCD",
+    "type": "Single-Hop (Design Doc)"
+  },
+  {
+    "question": "Who led the Recommendation Engine project for the Grocery App?",
+    "expected_answer": "Neha Gupta",
+    "type": "Single-Hop (Proposal)"
+  },
+  {
+    "question": "What was the root cause of the nightly server restarts at Retail Corp?",
+    "expected_answer": "Redis session queue",
+    "type": "Incident (Support)"
+  },
+  {
+    "question": "What is the AWS account balance for the Health Inc project?",
+    "expected_answer": "I don't know",
+    "type": "Unanswerable (Should escalate)"
+  }
+]

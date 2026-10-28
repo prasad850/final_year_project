@@ -21,9 +21,21 @@ def add_chunks(chunks: list[dict]):
         ids = [f"{c["source"]}_{c["chunk_index"]}" for c in chunks]
     )
 
-def search(query : str , n: int =5) -> list[dict]:
+def search(query : str , n: int =5, role: str = "Employee") -> list[dict]:
     col = get_collection()
-    result = col.query(query_embeddings=embed(query), n_results=n)
+    if col.count() == 0:
+        return []
+    where_filter = None
+    if role == "Guest":
+        # Assuming we tag documents with {"is_public": True/False} during ingest
+        # For now, we will do a basic filter on source path
+        pass 
+    result = col.query(
+        query_embeddings=embed([query]), 
+        n_results=n,
+        # where=where_filter 
+    )
+    
 
     return[
         {"text": doc , "source":meta["source"], "distance": dist }

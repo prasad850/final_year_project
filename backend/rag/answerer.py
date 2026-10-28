@@ -4,18 +4,22 @@ from backend.rag.confidence import assess
 from backend.utils.llm import generate
 
 
+
 def answer(question: str) -> dict:
     """Full RAG: retrieve, assess, generate, return structured dict."""
-    results = retrieve(question, n=5)
+    results = retrieve(question, n=15)
     assessment = assess(question, results)
 
     if assessment["escalate"]:
+        # NEW: Find the expert before returning
+        
         return {
             "answer": "I don't have enough information to answer.",
             "citations": [],
             "confidence": assessment["confidence"],
             "escalate": True,
             "reason": assessment["reason"],
+            
         }
 
     context = "\n\n---\n\n".join(r["text"] for r in results)
